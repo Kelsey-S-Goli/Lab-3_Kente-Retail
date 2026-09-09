@@ -1,0 +1,14 @@
+[Unit]
+Description=Kente Retail web app
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=kentesvc
+Group=kentesvc
+Environment=APP_CONF=/opt/kente-app/config/app.conf
+ExecStart=/usr/bin/python3 /opt/kente-app/app/server.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
