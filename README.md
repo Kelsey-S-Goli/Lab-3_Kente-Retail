@@ -16,3 +16,4 @@ Small Python web app that serves the Kente Retail storefront page and a
 
 ## Release notes
 - v1.0: first version on the new server.
+- v1.1: health check now calls the inventory service by name (inventory.kente.internal).
