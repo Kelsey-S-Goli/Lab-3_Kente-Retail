@@ -1,0 +1,14 @@
+# Copied from the live server (/etc/systemd/system/inventory-stub.service) on
+# 2026-11-27 so the repo matches production. Before this, the unit existed only
+# on the server and was not version-controlled.
+[Unit]
+Description=inventory service (local stand-in)
+After=network.target
+
+[Service]
+User=kentesvc
+ExecStart=/usr/bin/python3 /opt/kente-app/services/inventory_stub.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
