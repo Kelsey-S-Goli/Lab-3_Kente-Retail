@@ -28,8 +28,10 @@ def upstream_ok():
         with urllib.request.urlopen(CONF["UPSTREAM_URL"], timeout=2) as resp:
             return resp.status == 200, "ok"
     except Exception as exc:  # name not resolving, timeout, refused...
-        return False, type(exc).__name__ + ": " + str(exc).replace(" ", "_")[:80]
-
+        # The note must be ONE log field (policy 6.1): replace every space,
+        # including the one after the colon (was splitting lines into 9 fields).
+        return False, (type(exc).__name__ + ": " + str(exc)).replace(" ", "_")[:80]
+        
 class Handler(BaseHTTPRequestHandler):
     def _send(self, status, body, ctype="text/plain"):
         data = body.encode()
