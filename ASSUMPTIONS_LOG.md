@@ -1,6 +1,6 @@
 # Assumptions log
 
-**Author:** Kelsey Goli · **Last updated:** 27 November 2026
+**Author:** Kelsey Goli · **Last updated:** 27 November 2026 (after `policy_audit.sh`: 46 PASS, 0 FAIL)
 
 Every assumption I made, how I tested it, and where it ended up. I wrote several of these *before* the audit (in the comprehension memo) and kept them here unchanged, so the wrong ones stay visible.
 
@@ -41,7 +41,8 @@ Every assumption I made, how I tested it, and where it ended up. I wrote several
 | A20 | Old 9-field log lines are from the note bug, not from bad requests | **Confirmed** | All 5 were failed health checks written on 27 Nov with `URLError: <…>`, with a space. Older lines used `_` and had 8 fields. |
 | A21 | Maintenance can run as `kentesvc` instead of root | **Open** | `kentesvc` owns `data/snapshots`, so it should work. Not tested, because maintenance is on hold. |
 | A22 | Making the app's subfolders 775 → 755 is the CTO's call, not mine | **Open (decision)** | The policy doesn't cover them. `deploy.sh` deliberately leaves their mode alone. Raised in the handover. |
-| A23 | The EC2 security group allows only ports 22 and 8080 | **Open** | Not captured yet. Screenshot the inbound rules in the AWS console. |
-| A24 | A reboot test is allowed on this server | **Open** | Asking the instructor before running `sudo reboot`. |
-| A25 | The instructor account matches the values `policy_audit.sh` expects (uid 1000, `/bin/bash`, group `instructor`) | **Confirmed (partly)** | uid, shell and groups match the audit output. Their sudo rights come from `10-instructor`. Re-check if check 2.4 ever FAILs. |
+| A23 | The EC2 security group allows only ports 22 and 8080 | **Open (not tested)** | Not checked in the AWS console. Indirect evidence: from my laptop, ports 22 and 8080 connect and 9090 times out. Left for the next engineer. |
+| A24 | The fixes survive a reboot | **Open (not tested)** | No reboot done. The settings that make them persist are in place and checked: `preserve_hostname: true`, both services `enabled`, the `/etc/hosts` entry. |
+| A25 | The instructor account matches the values `policy_audit.sh` expects (uid 1000, `/bin/bash`, group `instructor`) | **Confirmed** | `policy_audit.sh` check 2.4 PASS on 27 Nov. |
 | A26 | The storefront errors (`500 FileNotFoundError`, 3–17 Nov) are a separate issue from the health outage | **Open** | `catalog.json` exists now, and `/` returns 200. The cause of the intermittent missing file is unknown. Recorded in the incident note as a follow-up. |
+| A27 | After all fixes and the `v1.1.2` deploy, the server fully matches policy v2.1 | **Confirmed** | `sudo scripts/policy_audit.sh`: 46 PASS, 0 FAIL, 0 WARN on 27 Nov. |
